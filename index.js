@@ -3,14 +3,15 @@ import env from 'dotenv';
 import todoRoutes from './routes/todoRoute.js'
 env.config();
 
+const PORT = process.env.PORT || 3000
+
 const app = express();
 
-console.log('testing')
 
 app.use(express.static('public'))
 
 app.use('/', todoRoutes)
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`server started at ${process.env.PORT}`)
+app.listen(PORT, ()=>{
+    console.log(`server started at ${PORT}`)
 })

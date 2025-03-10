@@ -2,7 +2,7 @@ import path from "path"
 
 export function todoHomePageServe(req, res){
     try{
-        res.sendFile(path.resolve('/MVC-TODO/views/Todo.html'))
+        res.sendFile(path.join(process.cwd(), '/views/Todo.html'))
     } catch {
         res.end("internal server error")
     }
@@ -10,7 +10,7 @@ export function todoHomePageServe(req, res){
 
 
 export function todoGetHandler(req, res){
-    fs.readFile(path.resolve('/MVC-TODO/views/data.json'), 'utf-8', (err, data)=>{
+    fs.readFile(path.resolve('/MVC-TODO/model/data.json'), 'utf-8', (err, data)=>{
 		if(!data){
             console.log("get is handled")
 			res.json([]);
