@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- <link rel="stylesheet" href="/style.css" /> -->
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+<title>Document</title>
+</head>
+<body class="flex h-screen justify-center items-center bg-[#EFEBE8]">
+<main class="h-[100%] sm:w-[100%] md:w-[50%] lg:w-[30%] bg-white shadow-2xl rounded-xl p-3">
+	<header class="bg-[#A9C4E2] h-[10%] rounded-b-full flex justify-center items-center">
+	</header>
+	<ul id="listContainer" class="h-[75%] p-4 space-y-2"></ul>
+	<footer class="flex justify-end">
+		<button id="open-modal" class="w-16 h-16 rounded-full bg-[#9AC3F1] text-white text-2xl font-bold hover:bg-blue-700 transition-all duration-300 shadow-lg flex items-center justify-center me-2">
+			<i class="fa fa-plus"></i>
+		</button>
+	</footer>
+</main>
+
+<!-- Modal -->
+<div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 flex justify-center items-center bg-black/30 backdrop-blur-md">
+	<div class="relative p-6 w-full/1.1 md:w-full max-w-md bg-white rounded-xl shadow-lg">
+		<div class="flex items-center justify-between p-4 border-b">
+			<h3 class="text-lg font-semibold text-gray-900">Create New Task</h3>
+			<button id="close-modal" class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 flex justify-center items-center transition">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+		<div class="p-4 space-y-4">
+			<div>
+				<input type="text" name="name" id="taskName" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 transition outline-none" placeholder="Type your Task" required>
+			</div>
+			<div id="taskBtnContainer">
+
+			</div>
+			<!-- <button id="addTaskBtn" class="w-full text-white bg-blue-700 hover:bg-blue-800 p-3 rounded-lg transition-all duration-300 shadow-md">Add to list</button> -->
+		</div>
+	</div>
+</div>
+
+<script src="/Todo.js"></script>
+</script>
+</body>
+</html>
