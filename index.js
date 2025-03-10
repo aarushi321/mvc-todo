@@ -5,6 +5,8 @@ env.config();
 
 const app = express();
 
+console.log('testing')
+
 app.use(express.static('public'))
 
 app.use('/', todoRoutes)
