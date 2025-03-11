@@ -1,3 +1,4 @@
+// Global Variables
 const modal = document.getElementById("crud-modal");
 const openModalBtn = document.getElementById("open-modal");
 const closeModalBtn = document.getElementById("close-modal");
@@ -5,13 +6,10 @@ const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskName");
 const listContainer = document.getElementById("listContainer");
 const addTaskBtnContainer = document.getElementById('')
-// const isEditBtn = false;
-// document.getElementById()
-// let crossBtn = null;
 
-/**
- * When user refresh the window then if data is available then create the list items
-*/
+// WHEN WINDOW IS LOADED FOR THE FIRST TIME OR USER REFRESH THE WINDOW ALL THE PREVIOUSLY ADDED TASKS ARE RETRIEVED
+
+
 window.addEventListener('load', ()=>{
 	const url = "/todo";
 	fetch(url)
@@ -32,35 +30,30 @@ window.addEventListener('load', ()=>{
 	.catch((error) => console.log(error))
 })
 
-// Listen click on task button where popup will be open
+// lISTEN CLICK ON PLUS BUTTON  POPUP IS SHOWN
+
 openModalBtn.addEventListener("click", () => {
 	modal.classList.remove("hidden");
-	// if(isEditBtn){
-	// 	<button id="editTaskBtn" class="w-full text-white bg-blue-700 hover:bg-blue-800 p-3 rounded-lg transition-all duration-300 shadow-md">Update Task</button>
-	// }
 });
 
-// In popup when user click on close button
+// TO CLOSE THE POPUP USING CLOSE BUTTON
+
 closeModalBtn.addEventListener("click", () => {
 	modal.classList.add("hidden");
 });
 
-// When user wants to add the task in to-do list
+// WHEN USER WANTS TO ADD TE TASK IN TO-DO LIST
+
 addTaskBtn.addEventListener('click', (e)=>{
 	e.preventDefault();
 	const taskObject = createTaskObject(taskInput.value);
-	// console.log(taskObject);
-	// const isAvailable =  editTask(taskObject);
 	addTask(taskObject);
-	// close the model when task is added
 	modal.classList.add("hidden");
 	taskInput.value = "";
 })
 
-/**
- * This function will create object with user data
- *
- * */
+// THIS FUNCTION WILL CREATE OBJECT WITH USER DATA
+
 function createTaskObject(inputValue){
 	const obj = {
 		id: Date.now(),
@@ -70,9 +63,14 @@ function createTaskObject(inputValue){
 	return obj
 }
 
+// THIS FUNCTION WILL CALLED W
 /**
  * This function will called when user click on "Add task button" after that this function will call create ui
  * */
+/**
+ *
+ * @param {user data like id, task, created at within an object} data
+ */
 function addTask(data){
 	const url = "/todo";
 	const taskPostConfig = {
@@ -82,48 +80,60 @@ function addTask(data){
 		},
 		body: JSON.stringify(data)
 }
+
 	fetch(url, taskPostConfig)
 	.then((response) => {
-		if(response.status == 200){
-			return response.json()
-		} else {
-			listContainer.innerHTML = ""
-			listContainer.innerText = "error occured please refresh your page"	
-		}
+		response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
 	})
 	.then((data) => createUi(data))
 	.catch((error) => console.log(error))
 }
 
+function createNewElem(elemObj){
+	let newElem = document.createElement(elemObj.name);
+	newElem.classList.add(...elemObj.class || []);
+	newElem.id = elemObj.id || "";
+	newElem.innerHTML = elemObj.innerText || "";
+	return newElem;
+}
+
 /**
  * This function is used to create list items which will displayed on ui
  * */
+
+
 const createUi = (dataObj) => {
-	const listItem = document.createElement('li');
-	listItem.id = dataObj.id;
-	listItem.classList.add("list-item");
-	const taskName = document.createElement('span');
-	taskName.classList.add("first-letter:capitalize");
-	taskName.innerText = dataObj.name;
+	const listItem = createNewElem({name: "li", class: ["list-item"], id: dataObj.id, innerText:""})
+	// const listItem = document.createElement('li');
+	// listItem.id = dataObj.id;
+	// listItem.classList.add("list-item");
+	const taskName = createNewElem({name: "span", class: ["first-letter:capitalize"], innerText: dataObj.name})
+	//const taskName = document.createElement('span');
+	//taskName.classList.add("first-letter:capitalize");
+	//taskName.innerText = dataObj.name;
 	listItem.appendChild(taskName)
-	const dateContainer = document.createElement('span');
-	dateContainer.innerText = dataObj.createdAt.split("T")[0];
+	const dateContainer = createNewElem({name: "span", innerText: dataObj.createdAt.split("T")[0]})
+	// const dateContainer = document.createElement('span');
+	// dateContainer.innerText = dataObj.createdAt.split("T")[0];
 	listItem.appendChild(dateContainer);
-	const checkedBtn = document.createElement('button');
-	checkedBtn.id = "checkedBtn";
+	const checkedBtn = createNewElem({name: "button", id: "checkedBtn", class:["checked-btn"], innerText: '<i class="fa-regular fa-circle-check"></i>' })
+	// const checkedBtn = document.createElement('button');
+	// checkedBtn.id = "checkedBtn";
 	let isChecked = false;
-	checkedBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-	checkedBtn.classList.add("checked-btn");
+	// checkedBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+	// checkedBtn.classList.add("checked-btn");
 	listItem.appendChild(checkedBtn);
 
-	crossBtn = document.createElement('button');
-	crossBtn.classList.add("cross-btn");
-	crossBtn.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+	const crossBtn = createNewElem({name: "button", class:["cross-btn"], innerText: '<i class="fa-solid fa-circle-xmark"></i>'})
+	// crossBtn = document.createElement('button');
+	// crossBtn.classList.add("cross-btn");
+	// crossBtn.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
 	listItem.appendChild(crossBtn);
 
-	editBtn = document.createElement('button');
-	editBtn.classList.add("edit-btn");
-	editBtn.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
+	const editBtn = createNewElem({name: "button", class:["edit-btn"], innerText: '<i class="fa-solid fa-user-pen"></i>'})
+	// editBtn = document.createElement('button');
+	// editBtn.classList.add("edit-btn");
+	// editBtn.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
 	listItem.appendChild(editBtn);
 	listContainer.appendChild(listItem);
 
