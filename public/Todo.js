@@ -13,10 +13,16 @@ const addTaskBtnContainer = document.getElementById('')
  * When user refresh the window then if data is available then create the list items
 */
 window.addEventListener('load', ()=>{
-	console.log("loaded")
 	const url = "/todo";
 	fetch(url)
-	.then((response) => response.json())
+	.then((response) => {
+		if(response.status == 200){
+			return response.json()
+		}else{
+			listContainer.innerHTML = ""
+			listContainer.innerText = response
+		}
+	})
 	.then((data) => {
 		listContainer.innerHTML = "";
 		data.forEach(element => {
@@ -77,7 +83,14 @@ function addTask(data){
 		body: JSON.stringify(data)
 }
 	fetch(url, taskPostConfig)
-	.then((response) => response.json())
+	.then((response) => {
+		if(response.status == 200){
+			return response.json()
+		} else {
+			listContainer.innerHTML = ""
+			listContainer.innerText = "error occured please refresh your page"	
+		}
+	})
 	.then((data) => createUi(data))
 	.catch((error) => console.log(error))
 }
