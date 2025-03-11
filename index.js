@@ -6,8 +6,8 @@ env.config();
 const PORT = process.env.PORT || 3000
 
 const app = express();
-console.log("hello")
 
+app.use(express.json())
 app.use(express.static('public'))
 
 app.use('/', todoRoutes)

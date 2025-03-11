@@ -1,5 +1,9 @@
 import path from "path"
-import fs from 'fs'
+import {
+	Read,
+	Write
+} from '../model/helper.js'
+
 
 export function todoHomePageServe(req, res){
     try{
@@ -11,23 +15,22 @@ export function todoHomePageServe(req, res){
 
 
 export function todoGetHandler(req, res){
-    fs.readFile(path.join(process.cwd(), '/model/data.json'), 'utf-8', (err, data)=>{
-		if(!data){
-            console.log("get is handled")
-			res.json([]);
-		}
-		else{
-			try {
-				const parsedData = JSON.parse(data);
-				res.json(parsedData);
-			} catch (parseError) {
-				console.error("Error parsing JSON:", parseError);
-				res.json([]);
-			}
-		}
-	})
+	Read('/model/data.json')
+	.then(readResp => res.status(200).json(readResp))
+	.catch(err => res.status(500).send(err))
 }
 
 export function todoPosthandler(req, res){
-	console.log('testing this request')
+	Read('/model/data.json')
+	.then(readResp => {
+		readResp.push(req.body)
+		return Write('/model/data.json', readResp)
+	})
+	.then(writeResp => {
+		res.status(200).json(req.body)
+	})
+	.catch(err => {
+		console.log(err)
+		res.status(500).send('internal server error')
+	})
 }	
