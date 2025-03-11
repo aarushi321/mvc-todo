@@ -1,4 +1,5 @@
 import path from "path"
+import fs from 'fs'
 
 export function todoHomePageServe(req, res){
     try{
@@ -10,7 +11,7 @@ export function todoHomePageServe(req, res){
 
 
 export function todoGetHandler(req, res){
-    fs.readFile(path.resolve('/MVC-TODO/model/data.json'), 'utf-8', (err, data)=>{
+    fs.readFile(path.join(process.cwd(), '/model/data.json'), 'utf-8', (err, data)=>{
 		if(!data){
             console.log("get is handled")
 			res.json([]);
@@ -26,3 +27,7 @@ export function todoGetHandler(req, res){
 		}
 	})
 }
+
+export function todoPosthandler(req, res){
+	console.log('testing this request')
+}	

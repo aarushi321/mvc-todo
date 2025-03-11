@@ -2,6 +2,7 @@ import { Router } from "express";
 import { 
     todoHomePageServe,
     todoGetHandler,
+    todoPosthandler,
 } from "../controller/todoController.js";
 
 const router = Router()
@@ -12,7 +13,8 @@ router.route('/')
 
 
 router.route('/todo')
-    .get(todoGetHandler);
+    .get(todoGetHandler)
+    .post(todoPosthandler)
 
 
 

@@ -29,9 +29,9 @@ window.addEventListener('load', ()=>{
 // Listen click on task button where popup will be open
 openModalBtn.addEventListener("click", () => {
 	modal.classList.remove("hidden");
-	if(isEditBtn){
-		<button id="editTaskBtn" class="w-full text-white bg-blue-700 hover:bg-blue-800 p-3 rounded-lg transition-all duration-300 shadow-md">Update Task</button>
-	}
+	// if(isEditBtn){
+	// 	<button id="editTaskBtn" class="w-full text-white bg-blue-700 hover:bg-blue-800 p-3 rounded-lg transition-all duration-300 shadow-md">Update Task</button>
+	// }
 });
 
 // In popup when user click on close button
