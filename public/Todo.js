@@ -5,29 +5,19 @@ const closeModalBtn = document.getElementById("close-modal");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskName");
 const listContainer = document.getElementById("listContainer");
-const addTaskBtnContainer = document.getElementById('')
+
 
 // WHEN WINDOW IS LOADED FOR THE FIRST TIME OR USER REFRESH THE WINDOW ALL THE PREVIOUSLY ADDED TASKS ARE RETRIEVED
-
 
 window.addEventListener('load', ()=>{
 	const url = "/todo";
 	fetch(url)
 	.then((response) => {
-		if(response.status == 200){
-			return response.json()
-		}else{
-			listContainer.innerHTML = ""
-			listContainer.innerText = response
-		}
-	})
-	.then((data) => {
+		response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
+	}).then((data) => {
 		listContainer.innerHTML = "";
-		data.forEach(element => {
-			createUi(element)
-		});
-	})
-	.catch((error) => console.log(error))
+		data.forEach(element => createUi(element));
+	}).catch((error) => console.log(error))
 })
 
 // lISTEN CLICK ON PLUS BUTTON  POPUP IS SHOWN
@@ -123,13 +113,9 @@ const createUi = (dataObj) => {
 		isChecked = !isChecked;
 		checkedBtn.innerHTML = isChecked ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle-check"></i>';
 		listItem.style.textDecoration = isChecked ? "line-through" : "none";
-		//listItem.style.backgroundColor = isChecked ? "gray" : "rgb(175, 219, 228)"
 	})
 
 	crossBtn.addEventListener('click', ()=>{
-		// fetch(`/deleteTask?=${encodeURIComponent(dataObj.id)}`,{
-		// 	method:"delete"
-		// })
 		fetch(`/todo?id=${encodeURIComponent(dataObj.id)}`, {
 			method: "DELETE"
 		});
@@ -142,7 +128,6 @@ const createUi = (dataObj) => {
 		taskInput.value = dataObj.name;
 		const taskObject = createTaskObject(taskInput.value);
 		console.log(taskInput.value,'task object')
-		// editTask();
 	})
 }
 
@@ -161,7 +146,3 @@ function editTask(data){
 	.then((data) => updateTask(data))
 	.catch((error) => console.log(error))
 }
-
-// function updateTask(){
-
-// }
