@@ -104,36 +104,18 @@ function createNewElem(elemObj){
 
 const createUi = (dataObj) => {
 	const listItem = createNewElem({name: "li", class: ["list-item"], id: dataObj.id, innerText:""})
-	// const listItem = document.createElement('li');
-	// listItem.id = dataObj.id;
-	// listItem.classList.add("list-item");
 	const taskName = createNewElem({name: "span", class: ["first-letter:capitalize"], innerText: dataObj.name})
-	//const taskName = document.createElement('span');
-	//taskName.classList.add("first-letter:capitalize");
-	//taskName.innerText = dataObj.name;
 	listItem.appendChild(taskName)
 	const dateContainer = createNewElem({name: "span", innerText: dataObj.createdAt.split("T")[0]})
-	// const dateContainer = document.createElement('span');
-	// dateContainer.innerText = dataObj.createdAt.split("T")[0];
 	listItem.appendChild(dateContainer);
 	const checkedBtn = createNewElem({name: "button", id: "checkedBtn", class:["checked-btn"], innerText: '<i class="fa-regular fa-circle-check"></i>' })
-	// const checkedBtn = document.createElement('button');
-	// checkedBtn.id = "checkedBtn";
 	let isChecked = false;
-	// checkedBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-	// checkedBtn.classList.add("checked-btn");
 	listItem.appendChild(checkedBtn);
 
 	const crossBtn = createNewElem({name: "button", class:["cross-btn"], innerText: '<i class="fa-solid fa-circle-xmark"></i>'})
-	// crossBtn = document.createElement('button');
-	// crossBtn.classList.add("cross-btn");
-	// crossBtn.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
 	listItem.appendChild(crossBtn);
 
 	const editBtn = createNewElem({name: "button", class:["edit-btn"], innerText: '<i class="fa-solid fa-user-pen"></i>'})
-	// editBtn = document.createElement('button');
-	// editBtn.classList.add("edit-btn");
-	// editBtn.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
 	listItem.appendChild(editBtn);
 	listContainer.appendChild(listItem);
 
