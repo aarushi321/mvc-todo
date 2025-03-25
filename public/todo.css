@@ -1,15 +1,11 @@
 .list-item{
-	display: flex;
 	padding: 10px;
-	justify-content: space-around;
-	align-items: center;
 	font-size: 16px;
 	margin-bottom: 10px;
 	/* background-color: rgb(175, 219, 228); */
 }
-.list-item span{
-	width: 33.3%;
-	word-wrap: break-word;
+.date {
+	font-size: 8px;
 }
 
 .checked-btn{
@@ -20,4 +16,17 @@
 	/* background-color: rgb(197, 30, 30); */
 	font-size: 1rem;
 	color: #F9554C;
+}
+.data-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+.btn {
+	padding-right: 8px;
+	padding-left: 8px;
+}
+
+.date-wrapper {
+	display: flex;
+	justify-content: end;
 }

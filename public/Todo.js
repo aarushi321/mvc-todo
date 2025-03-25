@@ -34,6 +34,7 @@ window.addEventListener('load', ()=>{
 
 openModalBtn.addEventListener("click", () => {
 	modal.classList.remove("hidden");
+	taskInput.focus();
 });
 
 // TO CLOSE THE POPUP USING CLOSE BUTTON
@@ -44,13 +45,31 @@ closeModalBtn.addEventListener("click", () => {
 
 // WHEN USER WANTS TO ADD TE TASK IN TO-DO LIST
 
-addTaskBtn.addEventListener('click', (e)=>{
-	e.preventDefault();
+// addTaskBtn.addEventListener('click', (e)=>{
+// 	e.preventDefault();
+// 	const taskObject = createTaskObject(taskInput.value);
+// 	addTask(taskObject);
+// 	modal.classList.add("hidden");
+// 	taskInput.value = "";
+// })
+addTaskBtn.addEventListener('click', addTaskEventHandler);
+taskInput.addEventListener('keydown', (event) => {
+	if (event.key === "Enter") {
+		addTaskEventHandler(event);
+	}
+});
+
+/**
+ * Handles both click and Enter key events.
+ */
+function addTaskEventHandler(event) {
+	event.preventDefault();
 	const taskObject = createTaskObject(taskInput.value);
 	addTask(taskObject);
 	modal.classList.add("hidden");
 	taskInput.value = "";
-})
+}
+
 
 // THIS FUNCTION WILL CREATE OBJECT WITH USER DATA
 
@@ -80,12 +99,14 @@ function addTask(data){
 		},
 		body: JSON.stringify(data)
 }
-
 	fetch(url, taskPostConfig)
 	.then((response) => {
-		response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
+		return response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
 	})
-	.then((data) => createUi(data))
+	.then((data) =>{
+		createUi(data)
+	}
+	)
 	.catch((error) => console.log(error))
 }
 
@@ -103,20 +124,27 @@ function createNewElem(elemObj){
 
 
 const createUi = (dataObj) => {
-	const listItem = createNewElem({name: "li", class: ["list-item"], id: dataObj.id, innerText:""})
+	const listItem = createNewElem({name: "li", class: ["list-item"], id: dataObj.id, innerText:""});
+	const dataWrapper = createNewElem({name:"div", class: ["data-wrapper"]})
+	const dateWrapper = createNewElem({name:"div", class: ["date-wrapper"]})
 	const taskName = createNewElem({name: "span", class: ["first-letter:capitalize"], innerText: dataObj.name})
-	listItem.appendChild(taskName)
-	const dateContainer = createNewElem({name: "span", innerText: dataObj.createdAt.split("T")[0]})
-	listItem.appendChild(dateContainer);
-	const checkedBtn = createNewElem({name: "button", id: "checkedBtn", class:["checked-btn"], innerText: '<i class="fa-regular fa-circle-check"></i>' })
+	const buttonWrapper = createNewElem({name:"div", class: ["button-wrapper"]})
+	dataWrapper.appendChild(taskName)
+	const dateContainer = createNewElem({name: "span", class:["date"], innerText: dataObj.createdAt.split("T")[0]})
+	dateWrapper.appendChild(dateContainer);
+	const checkedBtn = createNewElem({name: "button", id: "checkedBtn", class:["checked-btn", "btn"], innerText: '<i class="fa-regular fa-circle-check"></i>' })
 	let isChecked = false;
-	listItem.appendChild(checkedBtn);
+	buttonWrapper.appendChild(checkedBtn);
 
-	const crossBtn = createNewElem({name: "button", class:["cross-btn"], innerText: '<i class="fa-solid fa-circle-xmark"></i>'})
-	listItem.appendChild(crossBtn);
+	const editBtn = createNewElem({name: "button", class:["edit-btn", "btn"], innerText: '<i class="fa-solid fa-user-pen"></i>'})
+	buttonWrapper.appendChild(editBtn);
 
-	const editBtn = createNewElem({name: "button", class:["edit-btn"], innerText: '<i class="fa-solid fa-user-pen"></i>'})
-	listItem.appendChild(editBtn);
+	const crossBtn = createNewElem({name: "button", class:["cross-btn", "btn"], innerText: '<i class="fa-solid fa-circle-xmark"></i>'})
+	buttonWrapper.appendChild(crossBtn);
+
+	dataWrapper.appendChild(buttonWrapper);
+	listItem.appendChild(dataWrapper);
+	listItem.appendChild(dateWrapper);
 	listContainer.appendChild(listItem);
 
 	checkedBtn.addEventListener('click', ()=>{
@@ -141,8 +169,6 @@ const createUi = (dataObj) => {
 		modal.classList.remove("hidden");
 		taskInput.value = dataObj.name;
 		const taskObject = createTaskObject(taskInput.value);
-		console.log(taskInput.value,'task object')
-		// editTask();
 	})
 }
 
@@ -161,7 +187,3 @@ function editTask(data){
 	.then((data) => updateTask(data))
 	.catch((error) => console.log(error))
 }
-
-// function updateTask(){
-
-// }

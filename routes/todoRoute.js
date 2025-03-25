@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { 
+import {
     todoHomePageServe,
     todoGetHandler,
     todoPosthandler,
+	 toDoDeleteHandler
+
 } from "../controller/todoController.js";
 
 const router = Router()
@@ -15,6 +17,7 @@ router.route('/')
 router.route('/todo')
     .get(todoGetHandler)
     .post(todoPosthandler)
+	 .delete(toDoDeleteHandler)
 
 
 
