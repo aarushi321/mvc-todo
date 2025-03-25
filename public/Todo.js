@@ -9,16 +9,37 @@ const listContainer = document.getElementById("listContainer");
 
 // WHEN WINDOW IS LOADED FOR THE FIRST TIME OR USER REFRESH THE WINDOW ALL THE PREVIOUSLY ADDED TASKS ARE RETRIEVED
 
-window.addEventListener('load', ()=>{
+// window.addEventListener('load', ()=>{
+// 	const url = "/todo";
+// 	fetch(url)
+// 	.then((response) => {
+
+// 		response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
+// 	}).then((data) => {
+// 		listContainer.innerHTML = "";
+// 		data.forEach(element => createUi(element));
+// 	}).catch((error) => console.log(error))
+// })
+
+window.addEventListener("load", () => {
 	const url = "/todo";
 	fetch(url)
-	.then((response) => {
-		response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
-	}).then((data) => {
-		listContainer.innerHTML = "";
-		data.forEach(element => createUi(element));
-	}).catch((error) => console.log(error))
-})
+		 .then(response => {
+			  if (!response.ok) {
+					throw new Error("Network response was not ok");
+			  }
+			  return response.json();
+		 })
+		 .then(data => {
+			  listContainer.innerHTML = "";
+			  data.forEach(element => createUi(element));
+		 })
+		 .catch(error => {
+			  console.error("Error fetching tasks:", error);
+			  listContainer.innerHTML = "Error occurred, refresh your page.";
+		 });
+});
+
 
 // lISTEN CLICK ON PLUS BUTTON  POPUP IS SHOWN
 
@@ -151,9 +172,9 @@ const createUi = (dataObj) => {
 	})
 
 	editBtn.addEventListener('click',()=>{
-		isEditBtn = !isEditBtn;
 		modal.classList.remove("hidden");
 		taskInput.value = dataObj.name;
+		addTaskBtn.innerHTML = "Update Task"
 		const taskObject = createTaskObject(taskInput.value);
 	})
 }

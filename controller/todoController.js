@@ -3,7 +3,6 @@ import {
 	Read,
 	Write
 } from '../model/helper.js'
-import e from "express"
 
 
 export function todoHomePageServe(req, res){
