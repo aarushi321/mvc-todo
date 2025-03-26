@@ -37,7 +37,7 @@ export function todoPosthandler(req, res){
 	})
 }
 
-export function toDoDeleteHandler(req, res){
+export function todoDeleteHandler(req, res){
 	Read('/model/data.json')
 	.then((readResp)=>{
 		let index = readResp.findIndex(value => value.id === Number(req.query.id));
@@ -58,3 +58,34 @@ export function toDoDeleteHandler(req, res){
 	})
 	res.end();
 }
+
+export function todoPatchHandler(req, res) {
+	Read('/model/data.json')
+	.then((readResp) => {
+		 let index = readResp.findIndex(value => value.id === Number(req.query.id));
+
+		 if (index !== -1) {
+			//   readResp[index].id = req.body.id;
+			  readResp[index].name = req.body.name;
+			  readResp[index].createdAt = req.body.createdAt;
+			  console.log(req.body, '------->>>>>>>>>>>>');
+
+			  return Write('/model/data.json', readResp);
+		 } else {
+			  res.status(404).send("Task not found");
+			  return Promise.reject("Task not found"); // Stop further execution
+		 }
+	})
+	.then((updatedTask) => {
+		 // Ensure this block is executed only if task was found & updated
+		 res.status(200).json("Task updated successfully");
+
+	})
+	.catch((err) => {
+		 console.error(err);
+		 if (!res.headersSent) {
+			  res.status(500).send("Internal server error");
+		 }
+	});
+}
+

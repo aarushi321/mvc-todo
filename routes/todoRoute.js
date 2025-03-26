@@ -3,7 +3,8 @@ import {
     todoHomePageServe,
     todoGetHandler,
     todoPosthandler,
-	 toDoDeleteHandler
+	 todoDeleteHandler,
+	 todoPatchHandler
 
 } from "../controller/todoController.js";
 
@@ -17,7 +18,8 @@ router.route('/')
 router.route('/todo')
     .get(todoGetHandler)
     .post(todoPosthandler)
-	 .delete(toDoDeleteHandler)
+	 .delete(todoDeleteHandler)
+	 .patch(todoPatchHandler)
 
 
 

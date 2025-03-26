@@ -5,6 +5,9 @@ const closeModalBtn = document.getElementById("close-modal");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskName");
 const listContainer = document.getElementById("listContainer");
+const modelHeading = document.getElementById('modelHeading')
+let isEditButton = false;
+let editTaskId = null;
 
 
 // WHEN WINDOW IS LOADED FOR THE FIRST TIME OR USER REFRESH THE WINDOW ALL THE PREVIOUSLY ADDED TASKS ARE RETRIEVED
@@ -46,6 +49,8 @@ window.addEventListener("load", () => {
 openModalBtn.addEventListener("click", () => {
 	modal.classList.remove("hidden");
 	taskInput.focus();
+	modelHeading.innerHTML = "Create new task"
+	isEditButton = false;
 });
 
 // TO CLOSE THE POPUP USING CLOSE BUTTON
@@ -102,14 +107,44 @@ function createTaskObject(inputValue){
  * @param {user data like id, task, created at within an object} data
  */
 function addTask(data){
-	const url = "/todo";
-	const taskPostConfig = {
+	if(isEditButton){
+		const taskPostConfig = {
+			method: "PATCH",
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data)
+		}
+			fetch(`/todo?id=${encodeURIComponent(editTaskId)}`, taskPostConfig)
+    .then((response) => {
+        if (response.ok) {
+            return response.text(); // Read as plain text instead of JSON
+        } else {
+            listContainer.innerHTML = "Error occurred. Refresh your page.";
+            return Promise.reject("Server returned an error.");
+        }
+    })
+    .then(() => {
+        console.log("Server response:", data);
+		  const taskElement = document.getElementById(editTaskId);
+            if (taskElement) {
+                const taskNameElement = taskElement.querySelector(".task-name");
+					 console.log(taskNameElement, taskElement)
+                taskNameElement.innerHTML = data.name; // Update task name in UI
+            }
+    })
+    .catch((error) => console.log(error));
+	}
+	else {
+		addTaskBtn.innerHTML = "Add Task";
+		const url = "/todo";
+		const taskPostConfig = {
 		method: "POST",
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(data)
-}
+	}
 	fetch(url, taskPostConfig)
 	.then((response) => {
 		return response.status == 200?response.json():listContainer.innerHTML = "error occured refresh your page"
@@ -119,6 +154,7 @@ function addTask(data){
 	}
 	)
 	.catch((error) => console.log(error))
+	}
 }
 
 function createNewElem(elemObj){
@@ -132,13 +168,11 @@ function createNewElem(elemObj){
 /**
  * This function is used to create list items which will displayed on ui
  * */
-
-
 const createUi = (dataObj) => {
 	const listItem = createNewElem({name: "li", class: ["list-item"], id: dataObj.id, innerText:""});
 	const dataWrapper = createNewElem({name:"div", class: ["data-wrapper"]})
 	const dateWrapper = createNewElem({name:"div", class: ["date-wrapper"]})
-	const taskName = createNewElem({name: "span", class: ["first-letter:capitalize"], innerText: dataObj.name})
+	const taskName = createNewElem({name: "span", class: ["first-letter:capitalize", "task-name"], innerText: dataObj.name})
 	const buttonWrapper = createNewElem({name:"div", class: ["button-wrapper"]})
 	dataWrapper.appendChild(taskName)
 	const dateContainer = createNewElem({name: "span", class:["date"], innerText: dataObj.createdAt.split("T")[0]})
@@ -171,26 +205,14 @@ const createUi = (dataObj) => {
 		listItem.remove();
 	})
 
-	editBtn.addEventListener('click',()=>{
+	editBtn.addEventListener("click", () => {
+		isEditButton = true;
+		editTaskId = dataObj.id;
 		modal.classList.remove("hidden");
-		taskInput.value = dataObj.name;
-		addTaskBtn.innerHTML = "Update Task"
-		const taskObject = createTaskObject(taskInput.value);
-	})
-}
+		taskInput.value = document.getElementById(editTaskId)?.querySelector(".task-name")?.innerText || dataObj.name;
+		addTaskBtn.innerHTML = "Update Task";
+		modelHeading.innerHTML = "Update the task"
+		taskInput.focus();
+  });
 
-
-function editTask(data){
-	const url = '/todo';
-	const taskPostConfig = {
-		method: "PATCH",
-		headers: {
-			'Content-type': 'application/json',
-		},
-		body: JSON.stringify(data)
-	}
-	fetch(url, taskPostConfig)
-	.then((response) => response.json())
-	.then((data) => updateTask(data))
-	.catch((error) => console.log(error))
 }

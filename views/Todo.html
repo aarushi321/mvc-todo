@@ -9,10 +9,10 @@
 <title>Document</title>
 </head>
 <body class="flex h-screen justify-center items-center bg-[#EFEBE8]">
-<main class="h-[100%] sm:w-[100%] md:w-[50%] lg:w-[30%] bg-white shadow-2xl rounded-xl p-3">
+<main class="h-[100%] sm:w-[100%] md:w-[50%] lg:w-[65%] bg-white shadow-2xl rounded-xl p-3">
 	<header class="bg-[#A9C4E2] h-[10%] rounded-b-full flex justify-center items-center">
 	</header>
-	<ul id="listContainer" class="h-[75%] p-4 space-y-2"></ul>
+	<ul id="listContainer" class="h-[75%] p-4 space-y-2 overflow-auto"></ul>
 	<footer class="flex justify-end">
 		<button id="open-modal" class="w-16 h-16 rounded-full bg-[#9AC3F1] text-white text-2xl font-bold hover:bg-blue-700 transition-all duration-300 shadow-lg flex items-center justify-center me-2">
 			<i class="fa fa-plus"></i>
@@ -24,7 +24,7 @@
 <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 flex justify-center items-center bg-black/30 backdrop-blur-md">
 	<div class="relative p-6 w-full/1.1 md:w-full max-w-md bg-white rounded-xl shadow-lg">
 		<div class="flex items-center justify-between p-4 border-b">
-			<h3 class="text-lg font-semibold text-gray-900">Create New Task</h3>
+			<h3 id="modelHeading" class="text-lg font-semibold text-gray-900">Create New Task</h3>
 			<button id="close-modal" class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 flex justify-center items-center transition">
 				<i class="fas fa-times"></i>
 			</button>
